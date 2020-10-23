@@ -40,3 +40,11 @@ export const Tools = styled.div`
 export const Tool = styled.div`
   
 `;
+
+export const ToolHeader = styled.div`
+  
+`;
+
+export const ToolTags = styled.div`
+  
+`;
