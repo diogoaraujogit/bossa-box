@@ -1,23 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import Main from './pages/main';
+
+
+import GlobalStyle from './styles/global';
+import { ToastContainer } from 'react-toastify'
+
 
 function App() {
+
+  const rate = 62.5
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Main />
+
+      <GlobalStyle rate={rate} />
+      <ToastContainer autoClose={4000} />
     </div>
   );
 }
