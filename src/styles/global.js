@@ -1,8 +1,12 @@
 import { createGlobalStyle } from 'styled-components';
 import 'react-toastify/dist/ReactToastify.css'
 
+
 // Reset CSS básico
 export default createGlobalStyle`
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600;700;900&display=swap');
+
   * {
     margin: 0;
     padding: 0;
@@ -21,13 +25,14 @@ export default createGlobalStyle`
     font-size: ${props => props.rate}%; /* Outra forma de fazer a resposividade para desktops */
   }
   body {
-    font: 14px 'Roboto', sans-serif;
+    font: 14px 'Source Sans Pro', sans-serif;
     -webkit-font-smoothing: antialiased;
     background: #FFFFFF;
   }
   * {
-    font: 14px 'Roboto', sans-serif;
+    font: 14px 'Source Sans Pro', sans-serif;
     -webkit-font-smoothing: antialiased;
+    
   }
   a {
     text-decoration: none;

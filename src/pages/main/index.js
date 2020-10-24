@@ -28,6 +28,8 @@ const Main = () => {
   const [search, setSearch] = useState('')
   const [inLogs, setInLogs] = useState(false)
 
+  const [adding, setAdding] = useState(false)
+  const [formError, setFormError] = useState(false)
 
   // Modal Form - Schema
   const schema = yup.object({
@@ -53,20 +55,74 @@ const Main = () => {
       getTools('')
   }
 
+  function handleAddTool(values) {
+    const { toolDescription, toolLink, toolName, toolTags } = values
+
+    const body = {
+      title: toolName,
+      link: toolLink,
+      description: toolDescription,
+      tags: toolTags
+    }
+
+    addTool(body)
+  }
+
   // API Calls
   async function getTools(query_string) {
+
+    setBodyLoading(true)
+    setBodyMessage('')
+
     try {
 
       const response = await api_tools.get(`/tools${query_string}`)
 
       if (response.data) {
         setTools(response.data)
+      } else {
+        setBodyLoading('Unexpected error')
       }
 
     } catch (error) {
       toast.error('Error')
+      setBodyLoading('Unable to load devices')
+    }
+
+    setBodyLoading(false)
+  }
+
+  async function addTool(body) {
+    setAdding(true)
+    setFormError('')
+
+    try {
+
+      const response = await api_tools.post(`/tools`, body)
+
+      if (response.data) {
+        toast.info('Tool successfully added')
+        getTools('')
+      }
+
+    } catch (e) {
+      toast.error('An error occurred')
+      setFormError('Unable to connect to server')
+
+      const error = e.response?.data
+
+      if (error) {
+        if (error.statusCode === 409) {
+          setFormError('Subgroup name already exists')
+        }
+        else if (error.statusCode === 500) {
+          setFormError('An unexpected error occurred')
+        }
+      }
 
     }
+
+    setAdding(false)
   }
 
   // USE EFFECTS
@@ -80,7 +136,7 @@ const Main = () => {
       <Content>
         <Header>
           <h1>VUTTR</h1>
-          <h2>Very Useful Tools to Remember</h2>
+          <h4>Very Useful Tools to Remember</h4>
         </Header>
         <Actions>
           <Search>
@@ -106,18 +162,24 @@ const Main = () => {
             {
               close => {
                 return (
-                  <AddTool>
+                  <AddTool formError={formError} adding={adding}>
 
                     <div className='add-tool-header'>
                       <MdAdd />
                       Add new tool
                     </div>
+
+                    <div>
+                      <span>{formError}</span>
+                    </div>
+
                     <Formik
                       validateOnChange={false}
                       validateOnBlur={false}
                       validationSchema={schema}
                       onSubmit={(values) => {
-
+                        console.log(values)
+                        handleAddTool(values)
                       }}
                       initialValues={{}}
                     >
