@@ -20,6 +20,10 @@ export const Search = styled.div`
   
 `;
 
+export const AddTool = styled.div`
+  border: 1px solid red;
+`;
+
 
 export const Body = styled.div`
   
