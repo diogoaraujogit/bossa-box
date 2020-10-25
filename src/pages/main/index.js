@@ -5,7 +5,7 @@ import { MdAdd, MdClear, MdSearch } from 'react-icons/md'
 
 import {
   Container, Content, Header, Actions, Search, AddTool, Body, LoadingArea,
-  MessageArea, Tools, Tool, ToolHeader, ToolTags
+  MessageArea, Tools, Tool, ToolHeader, RemoveTool, ToolTags
 } from './styles';
 
 import api_tools from '../../services/api_tools';
@@ -29,6 +29,7 @@ const Main = () => {
   const [inLogs, setInLogs] = useState(false)
 
   const [adding, setAdding] = useState(false)
+  const [deleting, setDeleting] = useState(false)
   const [formError, setFormError] = useState(false)
 
   // Modal Form - Schema
@@ -55,7 +56,7 @@ const Main = () => {
       getTools('')
   }
 
-  function handleAddTool(values) {
+  function handleAddTool(values, close) {
     const { toolDescription, toolLink, toolName, toolTags } = values
 
     const body = {
@@ -65,8 +66,9 @@ const Main = () => {
       tags: toolTags
     }
 
-    addTool(body)
+    addTool(body, close)
   }
+
 
   // API Calls
   async function getTools(query_string) {
@@ -92,7 +94,7 @@ const Main = () => {
     setBodyLoading(false)
   }
 
-  async function addTool(body) {
+  async function addTool(body, close) {
     setAdding(true)
     setFormError('')
 
@@ -102,7 +104,9 @@ const Main = () => {
 
       if (response.data) {
         toast.info('Tool successfully added')
+        close()
         getTools('')
+
       }
 
     } catch (e) {
@@ -124,6 +128,39 @@ const Main = () => {
 
     setAdding(false)
   }
+
+  async function removeTool(id) {
+    setDeleting(true)
+
+    try {
+
+      const response = await api_tools.delete(`/tools/${id}`)
+
+      if (response.data) {
+        toast.info('Tool successfully removed')
+        getTools('')
+      }
+
+    } catch (e) {
+      toast.error('An error occurred')
+      setFormError('Unable to connect to server')
+
+      const error = e.response?.data
+
+      if (error) {
+        if (error.statusCode === 409) {
+          setFormError('Subgroup name already exists')
+        }
+        else if (error.statusCode === 500) {
+          setFormError('An unexpected error occurred')
+        }
+      }
+
+    }
+
+    setDeleting(false)
+  }
+
 
   // USE EFFECTS
   useEffect(() => {
@@ -151,6 +188,10 @@ const Main = () => {
             <CheckboxLabels value={inLogs} label='search in logs only' func={setInLogs} />
           </Search>
           <Popup
+            contentStyle={{
+              width: '60rem',
+              borderRadius: '5px',
+            }}
             trigger={
               <button>
                 <MdAdd />
@@ -178,8 +219,7 @@ const Main = () => {
                       validateOnBlur={false}
                       validationSchema={schema}
                       onSubmit={(values) => {
-                        console.log(values)
-                        handleAddTool(values)
+                        handleAddTool(values, close)
                       }}
                       initialValues={{}}
                     >
@@ -221,7 +261,7 @@ const Main = () => {
                                 <p>{errors && errors.toolLink}</p>
                               </div>
                             </div>
-                            <div className='add-tool-item'>
+                            <div className='add-tool-item description'>
                               <h4>Tool description</h4>
                               <div>
                                 <textarea
@@ -286,6 +326,7 @@ const Main = () => {
                       const title = tool.title
                       const description = tool.description
                       const tags = tool.tags
+                      const id = tool.id
 
                       return (
                         <Tool>
@@ -294,10 +335,48 @@ const Main = () => {
                               {title}
                             </a>
 
-                            <div>
-                              <MdClear />
-                              remove
-                            </div>
+                            <Popup
+                              contentStyle={{
+                                width: '60rem',
+                                borderRadius: '5px',
+                              }}
+                              trigger={
+                                <div>
+                                  <MdClear />
+                                  remove
+                                </div>
+                              }
+                              modal
+                            >
+                              {
+                                close => {
+
+                                  return (
+                                    <RemoveTool>
+                                      <div className='add-tool-header'>
+                                        <MdClear />
+                                        Remove tool
+                                      </div>
+
+                                      <div>
+                                        {/* <span>{removeError}</span> */}
+                                      </div>
+
+                                      <p>Are you sure you want to remove <strong>{title}</strong></p>
+
+                                      <div className='buttons'>
+                                        <button onClick={() => close()}>
+                                          Cancel
+                                        </button>
+                                        <button onClick={() => removeTool(id)}>
+                                          Yes, remove
+                                        </button>
+                                      </div>
+                                    </RemoveTool>
+                                  )
+                                }
+                              }
+                            </Popup>
 
                           </ToolHeader>
                           <p>

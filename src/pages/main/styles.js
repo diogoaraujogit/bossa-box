@@ -5,7 +5,8 @@ export const Container = styled.div`
   width: 100%;
   height: 100vh;
   justify-content: center;
-  background-color: ##DEDCE1;
+  background-color: #DEDCE1;
+  overflow-y: auto; 
 `;
 
 export const Content = styled.div`
@@ -13,6 +14,7 @@ export const Content = styled.div`
   flex-direction: column;
   padding: 5rem 0rem 0rem 0rem;
   width: 60rem;
+  height: 100%;
 `;
 
 export const Header = styled.div`
@@ -66,6 +68,7 @@ export const Search = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    
 
     svg {
       height: 2rem;
@@ -83,6 +86,7 @@ export const Search = styled.div`
       width: 20rem;
       font-size: 1.4rem;  
       margin-right: 2rem;
+      color: #170C3A;
     }
   }
 
@@ -98,13 +102,80 @@ export const Search = styled.div`
 `;
 
 export const AddTool = styled.div`
-  border: 1px solid red;
-  background-color: #ffffff;
+  padding: 2rem;
+  color: #170C3A;
+  width: 100%;
+
+  .add-tool-header {
+    font-size: 2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;  
+    margin-bottom: 2rem;
+
+    svg {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+  }
+
+  form {
+    /* padding: 0rem 2rem; */
+    width: 100%;
+  }
+
+  .add-tool-item {
+    height: 10rem;
+  }
+
+  .description {
+    height: 14rem;
+  }
+
+  input, textarea {
+    background: #F5F4F6 0% 0% no-repeat padding-box;
+    border: 1px solid #EBEAED;
+    border-radius: 5px;
+    padding: 0rem 1rem;
+    height: 3rem;
+    width: 100%;
+    font-size: 1.4rem;  
+    color: #170C3A;
+  } 
+
+  textarea {
+    resize: none;
+    height: 7rem;
+    padding: 1rem;
+  }
+
+  h4 {
+    margin-bottom: 1rem;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  button {
+    background: #365DF0 0% 0% no-repeat padding-box;
+    border-radius: 5px;
+    border: none;
+    color: #FFFFFF;
+    width: 10rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 3rem;
+    justify-content: center;
+    font-weight: 600;
+  }
 `;
 
 
 export const Body = styled.div`
-  
+  margin-bottom: 3rem;
 `;
 
 export const LoadingArea = styled.div`
@@ -128,6 +199,7 @@ export const Tool = styled.div`
   margin-bottom: 2.5rem;
   padding: 1rem;
   transition: box-shadow 0.5s;
+  color: #170C3A;
 
   &:hover {
     box-shadow: 0px 20px 25px #0000001A;
@@ -135,9 +207,77 @@ export const Tool = styled.div`
 `;
 
 export const ToolHeader = styled.div`
-  
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  a {
+    color: blue;
+    border-bottom: 1px solid blue;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+
+    svg {
+      font-size: 2rem;
+    }
+  }
+`;
+
+export const RemoveTool = styled.div`
+  padding: 2rem;
+  color: #170C3A;
+  width: 100%;
+
+  .add-tool-header {
+    font-size: 2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;  
+    margin-bottom: 2rem;
+
+    svg {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  button {
+    background: #365DF0 0% 0% no-repeat padding-box;
+    border-radius: 5px;
+    border: none;
+    color: #FFFFFF;
+    width: 10rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 3rem;
+    justify-content: center;
+    font-weight: 600;
+    margin-left: 2rem;
+  }
 `;
 
 export const ToolTags = styled.div`
-  
+  margin-top: 1.5rem;
+
+  span {
+    margin-right: 1rem;
+    font-weight: bold;
+  }
 `;

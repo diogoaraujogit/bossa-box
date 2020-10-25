@@ -3,7 +3,7 @@ import Main from './pages/main';
 
 import GlobalStyle from './styles/global';
 import { ToastContainer } from 'react-toastify'
-
+import 'reactjs-popup/dist/index.css';
 
 function App() {
 
