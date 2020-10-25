@@ -31,6 +31,7 @@ const Main = () => {
   const [adding, setAdding] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [formError, setFormError] = useState(false)
+  const [deletingError, setDeletingError] = useState(false)
 
   // Modal Form - Schema
   const schema = yup.object({
@@ -59,11 +60,13 @@ const Main = () => {
   function handleAddTool(values, close) {
     const { toolDescription, toolLink, toolName, toolTags } = values
 
+    const tagArrays = toolTags.split(' ')
+
     const body = {
       title: toolName,
       link: toolLink,
       description: toolDescription,
-      tags: toolTags
+      tags: tagArrays
     }
 
     addTool(body, close)
@@ -74,21 +77,22 @@ const Main = () => {
   async function getTools(query_string) {
 
     setBodyLoading(true)
-    setBodyMessage('')
 
     try {
 
       const response = await api_tools.get(`/tools${query_string}`)
 
       if (response.data) {
+        setBodyMessage('')
         setTools(response.data)
+
       } else {
-        setBodyLoading('Unexpected error')
+        setBodyMessage('Unexpected error')
       }
 
     } catch (error) {
       toast.error('Error')
-      setBodyLoading('Unable to load devices')
+      setBodyMessage('Unable to load devices')
     }
 
     setBodyLoading(false)
@@ -111,19 +115,7 @@ const Main = () => {
 
     } catch (e) {
       toast.error('An error occurred')
-      setFormError('Unable to connect to server')
-
-      const error = e.response?.data
-
-      if (error) {
-        if (error.statusCode === 409) {
-          setFormError('Subgroup name already exists')
-        }
-        else if (error.statusCode === 500) {
-          setFormError('An unexpected error occurred')
-        }
-      }
-
+      setFormError('An unexpected error occurred')
     }
 
     setAdding(false)
@@ -131,6 +123,7 @@ const Main = () => {
 
   async function removeTool(id) {
     setDeleting(true)
+    setDeletingError('')
 
     try {
 
@@ -143,19 +136,7 @@ const Main = () => {
 
     } catch (e) {
       toast.error('An error occurred')
-      setFormError('Unable to connect to server')
-
-      const error = e.response?.data
-
-      if (error) {
-        if (error.statusCode === 409) {
-          setFormError('Subgroup name already exists')
-        }
-        else if (error.statusCode === 500) {
-          setFormError('An unexpected error occurred')
-        }
-      }
-
+      setDeletingError('An unexpected error occurred')
     }
 
     setDeleting(false)
@@ -167,15 +148,23 @@ const Main = () => {
     handleSearch()
   }, [search, inLogs])
 
+  useEffect(() => {
+    if(!tools.length) {
+      setBodyMessage('No tools found')
+    }
+  }, [tools])
 
   return (
     <Container>
       <Content>
+
         <Header>
           <h1>VUTTR</h1>
           <h4>Very Useful Tools to Remember</h4>
         </Header>
+
         <Actions>
+
           <Search>
             <div>
               <MdSearch />
@@ -187,7 +176,9 @@ const Main = () => {
             </div>
             <CheckboxLabels value={inLogs} label='search in logs only' func={setInLogs} />
           </Search>
+
           <Popup
+            onOpen={() => setFormError('')}
             contentStyle={{
               width: '60rem',
               borderRadius: '5px',
@@ -210,7 +201,7 @@ const Main = () => {
                       Add new tool
                     </div>
 
-                    <div>
+                    <div className='form-error'>
                       <span>{formError}</span>
                     </div>
 
@@ -226,10 +217,7 @@ const Main = () => {
                       {({
                         handleSubmit,
                         handleChange,
-                        handleBlur,
                         values,
-                        touched,
-                        isValid,
                         errors,
                       }) => (
                           <form noValidate onSubmit={handleSubmit}>
@@ -290,8 +278,10 @@ const Main = () => {
                               </div>
                             </div>
                             <div className='buttons'>
-                              <button type='submit'>
-                                Add tool
+                              <button disabled={adding} type='submit'>
+                                {
+                                  adding? 'Adding...' : 'Add tool'
+                                }
                               </button>
                             </div>
                           </form>
@@ -305,6 +295,7 @@ const Main = () => {
             }
           </Popup>
         </Actions>
+
         <Body>
           {
             bodyLoading ?
@@ -331,11 +322,12 @@ const Main = () => {
                       return (
                         <Tool>
                           <ToolHeader>
-                            <a href={link}>
+                            <a href={link} target="_blank">
                               {title}
                             </a>
 
                             <Popup
+                            onOpen={() => setDeletingError('')}
                               contentStyle={{
                                 width: '60rem',
                                 borderRadius: '5px',
@@ -352,24 +344,26 @@ const Main = () => {
                                 close => {
 
                                   return (
-                                    <RemoveTool>
+                                    <RemoveTool deleting={deleting}>
                                       <div className='add-tool-header'>
                                         <MdClear />
                                         Remove tool
                                       </div>
 
-                                      <div>
-                                        {/* <span>{removeError}</span> */}
+                                      <div className='remove-error'>
+                                        <span>{deletingError}</span>
                                       </div>
 
-                                      <p>Are you sure you want to remove <strong>{title}</strong></p>
+                                      <p>Are you sure you want to remove <span>{title}</span></p>
 
                                       <div className='buttons'>
-                                        <button onClick={() => close()}>
+                                        <button disabled={deleting} onClick={() => close()}>
                                           Cancel
                                         </button>
-                                        <button onClick={() => removeTool(id)}>
-                                          Yes, remove
+                                        <button disabled={deleting} onClick={() => removeTool(id)}>
+                                          {
+                                            deleting? 'Removing...' : 'Yes, remove'
+                                          }
                                         </button>
                                       </div>
                                     </RemoveTool>
@@ -383,6 +377,7 @@ const Main = () => {
                             {description}
                           </p>
                           <ToolTags>
+                            <p>
                             {
                               tags && Array.isArray(tags) && tags.map(tag => {
 
@@ -391,6 +386,7 @@ const Main = () => {
                                 )
                               })
                             }
+                            </p>
                           </ToolTags>
                         </Tool>
                       )

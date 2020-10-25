@@ -12,9 +12,14 @@ export const Container = styled.div`
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 5rem 0rem 0rem 0rem;
-  width: 60rem;
+  padding: 5rem 2rem 0rem 2rem;
+  width: 64rem;
   height: 100%;
+
+  @media(max-width: 600px) {
+    width: 100%;
+  }
+
 `;
 
 export const Header = styled.div`
@@ -39,6 +44,10 @@ export const Actions = styled.div`
   align-items: center;
   margin-bottom: 2rem;
 
+  @media(max-width: 600px) {
+    flex-direction: column;
+  }
+
   > button {
     background: #365DF0 0% 0% no-repeat padding-box;
     border-radius: 5px;
@@ -51,6 +60,11 @@ export const Actions = styled.div`
     height: 3rem;
     justify-content: center;
     font-weight: 600;
+    transition: background 0.2s;
+
+    &:hover{
+      background-color: #2F55CC;
+    }
 
     svg {
       font-size: 2.5rem;
@@ -63,6 +77,11 @@ export const Search = styled.div`
   flex-direction: row;
   align-items: center;
   color: #170C3A;
+
+  @media(max-width: 600px) {
+    flex-direction: column;
+  }
+
 
   > div {
     display: flex;
@@ -119,6 +138,15 @@ export const AddTool = styled.div`
     }
   }
 
+  .form-error {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    height: 2rem;
+    margin-bottom: 1rem;
+    color: #F95E5A
+  }
+
   form {
     /* padding: 0rem 2rem; */
     width: 100%;
@@ -126,6 +154,11 @@ export const AddTool = styled.div`
 
   .add-tool-item {
     height: 10rem;
+
+    p {
+      color: #F95E5A;
+      text-align: end;
+    }
   }
 
   .description {
@@ -142,6 +175,12 @@ export const AddTool = styled.div`
     font-size: 1.4rem;  
     color: #170C3A;
   } 
+
+  .input-error {
+    background-color: #FEEFEE;
+    color: #F95E5A;
+    border-color: #F95E5A;
+  }
 
   textarea {
     resize: none;
@@ -170,6 +209,18 @@ export const AddTool = styled.div`
     height: 3rem;
     justify-content: center;
     font-weight: 600;
+    transition: background 0.2s;
+
+    &:hover{
+      background-color: #2F55CC;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      background-color: #2F55CC;
+    }
+
+
   }
 `;
 
@@ -179,11 +230,31 @@ export const Body = styled.div`
 `;
 
 export const LoadingArea = styled.div`
-  
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+
+  .MuiCircularProgress-root {
+    width: 4rem !important;
+    height: 4rem !important;
+    margin-left: 1rem;
+  }
+
+  .MuiCircularProgress-svg {
+    color: #365DF0;
+    opacity: 1;
+    width: 4rem;
+    height: 4rem;
+  }
 `;
 
 export const MessageArea = styled.div`
-  
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  color: #170C3A;
 `;
 
 export const Tools = styled.div`
@@ -214,8 +285,9 @@ export const ToolHeader = styled.div`
   margin-bottom: 1rem;
 
   a {
-    color: blue;
-    border-bottom: 1px solid blue;
+    color: #170C3A;
+    border-bottom: 1px solid #170C3A;
+    font-weight: 600;
   }
 
   > div {
@@ -240,7 +312,7 @@ export const RemoveTool = styled.div`
     font-weight: 600;
     display: flex;
     align-items: center;  
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 
     svg {
       font-size: 2rem;
@@ -248,8 +320,21 @@ export const RemoveTool = styled.div`
     }
   }
 
+  .remove-error {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 1rem;
+    color: #F95E5A
+  }
+
+
   p {
     margin-bottom: 1rem;
+  }
+
+  span {
+    font-weight: 600;
   }
 
   .buttons {
@@ -258,7 +343,7 @@ export const RemoveTool = styled.div`
   }
 
   button {
-    background: #365DF0 0% 0% no-repeat padding-box;
+    background-color: ${props => props.deleting? '#CC4C4C' : '#F95E5A'} ;
     border-radius: 5px;
     border: none;
     color: #FFFFFF;
@@ -270,11 +355,30 @@ export const RemoveTool = styled.div`
     justify-content: center;
     font-weight: 600;
     margin-left: 2rem;
+    transition: background 0.2s;
+
+    &:hover{
+      background-color: #CC4C4C;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+
+    &:first-child {
+      background-color: #FEEFEE;
+      color: #F95E5A;
+
+      &:hover{
+      background-color: #FCD7D6;
+    }
+    }
   }
 `;
 
 export const ToolTags = styled.div`
   margin-top: 1.5rem;
+  word-break: break-all;
 
   span {
     margin-right: 1rem;
