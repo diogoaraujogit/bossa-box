@@ -146,6 +146,8 @@ const Main = () => {
   // USE EFFECTS
   useEffect(() => {
     handleSearch()
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, inLogs])
 
   useEffect(() => {
@@ -320,9 +322,9 @@ const Main = () => {
                       const id = tool.id
 
                       return (
-                        <Tool>
+                        <Tool key={id}>
                           <ToolHeader>
-                            <a href={link} target="_blank">
+                            <a href={link} target="_blank" rel="noreferrer">
                               {title}
                             </a>
 
@@ -382,7 +384,7 @@ const Main = () => {
                               tags && Array.isArray(tags) && tags.map(tag => {
 
                                 return (
-                                  <span>{`#${tag}`}</span>
+                                  <span key={tags.indexOf(tag)}>{`#${tag}`}</span>
                                 )
                               })
                             }
