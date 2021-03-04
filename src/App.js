@@ -1,6 +1,4 @@
 import Main from './pages/main';
-
-
 import GlobalStyle from './styles/global';
 import { ToastContainer } from 'react-toastify'
 import 'reactjs-popup/dist/index.css';
@@ -12,7 +10,6 @@ function App() {
   return (
     <div className="App">
       <Main />
-
       <GlobalStyle rate={rate} />
       <ToastContainer autoClose={4000} />
     </div>

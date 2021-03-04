@@ -1,20 +1,52 @@
-# VUTTR
-## Very Useful Tools To Remember
+# VUTTR - Very Useful Tools To Remember
 
-The application is a simple repository for managing tools with their names, 
-links, descriptions and tags.
+## Description
+Repository for managing (CRUD) tools with their names, links, descriptions and tags.
 
-## Getting started
+## Tools and Technologies
+- React
+- Styled-Components
+- Javascript
+- Axios
+- React Toastify
+- Formik
+- Yup
 
-### `Running local`
+## Preview
 
-You can clone the repository or download the files to test yourself locally.
-In the local repository, insert your backend api link in the variable available 
-in the .env file and then run `yarn && yarn start`
-The application must be running on localhost, on the designated port.
+Check out the video by clicking on the thumbnail. (YouTube)
 
-### `Netlify`
+[![VUTTR](http://img.youtube.com/vi/rD1VRNTj-oA/0.jpg)](http://www.youtube.com/watch?v=rD1VRNTj-oA "VUTTR")
 
+
+## Instructions
+
+#### `Netlify`
 If you want to see the current version of the application working now, 
 it is running at https://vuttr-diogo.netlify.app. All functions can be used normally.
 The backend is hosted on heroku.
+
+#### `Run Local`
+You will not be able to run the application correctly because it needs a specific API link in the .env file to receive the data. But if you want to run anyway, just follow the steps below.
+
+Clone down this repository. You will need `node` and `npm` installed globally on your machine.  
+
+Installation:
+
+`npm install`   
+
+To Start Server:
+
+`npm start`  
+
+To Visit App:
+
+`localhost:3000`
+
+
+
+
+
+
+
+
